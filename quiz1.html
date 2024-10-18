@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Raleway', sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .quiz-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 100%;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question p {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        label {
+            font-weight: 400;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #FFB03B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: #e09b2e;
+        }
+
+        .result, .feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+            color: #333;
+        }
+
+        .feedback {
+            margin-bottom: 20px;
+        }
+
+        .correct {
+            color: green;
+        }
+
+        .incorrect {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <form id="quiz-form">
+            <div class="quiz-question">
+                <p>1. Waarom vindt Lotte het t-shirt van Bas lelijk?</p>
+                <label><input type="radio" name="q1" value="a"> a. Het is te groot</label><br>
+                <label><input type="radio" name="q1" value="b"> b. Het is versleten</label><br>
+                <label><input type="radio" name="q1" value="c"> c. Het is te grijs</label>
+                <div class="feedback" id="feedback-q1"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p>2. Bas zegt “Maar wel heel comfortabel!” Wat is comfortabel?</p>
+                <label><input type="radio" name="q2" value="a"> a. De rode jurk</label><br>
+                <label><input type="radio" name="q2" value="b"> b. Het grijze t-shirt</label><br>
+                <label><input type="radio" name="q2" value="c"> c. Het witte overhemd</label>
+                <div class="feedback" id="feedback-q2"></div>
+            </div>
+
+            <div class="quiz-question">
+                <p>3. Wat voor overhemd heeft Bas niet?</p>
+                <label><input type="radio" name="q3" value="a"> a. Een grijs overhemd</label><br>
+                <label><input type="radio" name="q3" value="b"> b. Een mooi wit overhemd</label><br>
+                <label><input type="radio" name="q3" value="c"> c. Een sportief overhemd</label>
+                <div class="feedback" id="feedback-q3"></div>
+            </div>
+
+            <button type="button" onclick="submitQuiz()">Verstuur</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        function submitQuiz() {
+            var score = 0;
+
+            // Correct answers
+            var answers = {
+                q1: 'c',
+                q2: 'b',
+                q3: 'b'
+            };
+
+            // Get user's answers
+            var userAnswers = {
+                q1: document.querySelector('input[name="q1"]:checked'),
+                q2: document.querySelector('input[name="q2"]:checked'),
+                q3: document.querySelector('input[name="q3"]:checked')
+            };
+
+            // Check if all questions are answered
+            if (!userAnswers.q1 || !userAnswers.q2 || !userAnswers.q3) {
+                alert('Beantwoord alle vragen!');
+                return;
+            }
+
+            // Feedback and score calculation
+            for (var key in answers) {
+                var feedbackDiv = document.getElementById('feedback-' + key);
+                if (userAnswers[key].value === answers[key]) {
+                    feedbackDiv.innerHTML = 'Correct!';
+                    feedbackDiv.className = 'feedback correct';
+                    score++;
+                } else {
+                    feedbackDiv.innerHTML = 'Incorrect. Het juiste antwoord is: ' + getCorrectAnswer(key);
+                    feedbackDiv.className = 'feedback incorrect';
+                }
+            }
+
+            // Display result
+            var resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = 'Je hebt ' + score + ' van de 3 vragen correct!';
+        }
+
+        // Get the correct answer for display in the feedback
+        function getCorrectAnswer(question) {
+            var correctAnswersText = {
+                q1: 'Het is te grijs',
+                q2: 'Het grijze t-shirt',
+                q3: 'Een mooi wit overhemd'
+            };
+            return correctAnswersText[question];
+        }
+    </script>
+</body>
+</html>
